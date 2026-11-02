@@ -51,6 +51,9 @@ em { font-style: italic; }
 .watch .watch-art { position: absolute; width: 534.75936%; max-width: none; height: auto; left: -217.29055%; top: -71.75325%; }
 .watch-screen { position: absolute; left: 9.1%; top: 21.75%; width: 76.65%; height: 56.49%; background: #000; border-radius: 25% / 21%; overflow: hidden; }
 .watch-screen img { position: absolute; left: .93%; top: .77%; width: 98.14%; height: 98.46%; object-fit: fill; border-radius: 24% / 20%; }
+/* Alternates the main value between cyan and Midnight Blush, about 6 s each. */
+.watch-screen-alt { opacity: 0; animation: screen-swap 12s ease-in-out infinite; }
+@keyframes screen-swap { 0%, 42% { opacity: 0; } 50%, 92% { opacity: 1; } 100% { opacity: 0; } }
 .product-figure figcaption { margin-top: 16px; width: 100%; text-align: center; font-size: 11px; color: var(--muted); }
 .section-rule { border-top: 1px solid var(--line); padding-block: 64px; }
 h2 { font-size: clamp(28px, 3vw, 40px); letter-spacing: -.035em; font-weight: 750; line-height: 1.1; }
@@ -156,4 +159,4 @@ h2 { font-size: clamp(28px, 3vw, 40px); letter-spacing: -.035em; font-weight: 75
   .document-content h2 { font-size: 33px; }
   .not-found { padding-block: 60px; }
 }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .watch-screen-alt { display: none; } }
