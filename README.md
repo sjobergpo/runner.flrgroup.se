@@ -10,7 +10,7 @@ Marketing, support, and privacy website for **Runner**, the Apple Watch running 
 | Support URL | https://runner.flrgroup.se/support/ |
 | Privacy Policy URL | https://runner.flrgroup.se/privacy/ |
 
-App Store listing: https://apps.apple.com/app/runner-running-watch/id6816334642 (no country code, so Apple opens the visitor’s own storefront). The public contact address is **runner@flrgroup.se**.
+App Store listing: https://apps.apple.com/app/runner-running-watch/id6816334642 (no country code, so Apple opens the visitor’s own storefront). The site’s App Store links use the campaign link `https://apps.apple.com/app/apple-store/id6816334642?pt=127207286&ct=website&mt=8`, so visits and downloads from the website appear under **Analytics → Acquisition → Campaigns** in App Store Connect. The JSON-LD `installUrl` keeps the plain listing URL. The public contact address is **runner@flrgroup.se**.
 
 ## Local preview and checks
 
