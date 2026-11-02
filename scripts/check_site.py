@@ -3,6 +3,7 @@
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
+import json
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -16,6 +17,7 @@ class Page(HTMLParser):
         self.path, self.ids, self.links, self.errors = path, set(), [], []
         self.headings, self.canonical, self.description = 0, [], []
         self.title, self.language, self.viewport = False, False, False
+        self.ld_json, self.in_ld_json = [], False
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
         if 'id' in a:
@@ -30,8 +32,14 @@ class Page(HTMLParser):
         if tag == 'img' and 'alt' not in a: self.errors.append('image missing alt')
         for key in ('href', 'src'):
             if a.get(key): self.links.append((a[key], tag))
-        if tag in ('script', 'iframe'): self.errors.append('unexpected script or iframe')
+        if tag == 'script' and a.get('type') == 'application/ld+json' and 'src' not in a:
+            self.in_ld_json = True; self.ld_json.append('')
+        elif tag in ('script', 'iframe'): self.errors.append('unexpected script or iframe')
         if tag == 'meta' and a.get('property') == 'og:image': self.links.append((a['content'], 'asset'))
+    def handle_data(self, data):
+        if self.in_ld_json: self.ld_json[-1] += data
+    def handle_endtag(self, tag):
+        if tag == 'script': self.in_ld_json = False
 
 pages = {}
 for path in sorted(ROOT.rglob('*.html')):
@@ -47,6 +55,9 @@ for path, page in pages.items():
                         (len(page.description) == 1 and bool(page.description[0]), 'missing description'),
                         (page.canonical == [expected], 'incorrect canonical URL')]:
         if not ok: page.errors.append(message)
+    for block in page.ld_json:
+        try: json.loads(block)
+        except ValueError as err: page.errors.append('invalid JSON-LD: ' + str(err))
     for href, tag in page.links:
         url = urlsplit(href)
         if url.scheme == 'mailto':

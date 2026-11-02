@@ -38,6 +38,7 @@ em { font-style: italic; }
 .hero { display: grid; grid-template-columns: 1.25fr .75fr; gap: 24px; padding-block: 64px 68px; align-items: center; }
 .hero h1 { font-size: clamp(56px, 7vw, 96px); letter-spacing: -.05em; font-weight: 850; line-height: .95; }
 .hero h1 em { color: var(--lime); }
+.hero-kicker { display: block; margin-bottom: 20px; color: var(--muted); font-size: 14px; font-weight: 600; font-style: normal; letter-spacing: 0; line-height: 1.4; }
 .hero-description { font-size: 17px; color: var(--muted); max-width: 400px; margin-top: 28px; line-height: 1.6; }
 .button { display: inline-flex; align-items: center; justify-content: space-between; gap: 32px; min-height: 50px; padding: 12px 22px; background: var(--lime); color: #000; font-size: 13px; font-weight: 750; text-decoration: none; border-radius: 3px; }
 .button:hover { background: #d4ff72; color: #000; }
