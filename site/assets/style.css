@@ -52,14 +52,14 @@ em { font-style: italic; }
 .watch .watch-art { position: absolute; width: 534.75936%; max-width: none; height: auto; left: -217.29055%; top: -71.75325%; }
 .watch-screen { position: absolute; left: 9.1%; top: 21.75%; width: 76.65%; height: 56.49%; background: #000; border-radius: 25% / 21%; overflow: hidden; }
 .watch-screen img { position: absolute; left: .93%; top: .77%; width: 98.14%; height: 98.46%; object-fit: fill; border-radius: 24% / 20%; }
-/* Cycles the main metric like Double Tap: pace, avg pace, lap pace, alt gain, about 6 s each.
+/* Cycles the main metric like Double Tap: pace, avg pace, lap pace, alt gain, 5 s each.
    Each layer fades in over the one below and stays until the next is opaque; the last fades back to pace. */
-.watch-screen-alt { opacity: 0; animation: screen-hold 24s ease-in-out infinite; }
-.watch-screen-alt:nth-child(2) { animation-delay: 6s; }
-.watch-screen-alt:nth-child(3) { animation-delay: 12s; }
-.watch-screen-alt:nth-child(4) { animation-name: screen-last; animation-delay: 18s; }
-@keyframes screen-hold { 0% { opacity: 0; } 4.17%, 29.17% { opacity: 1; } 29.2%, 100% { opacity: 0; } }
-@keyframes screen-last { 0% { opacity: 0; } 4.17%, 25% { opacity: 1; } 29.17%, 100% { opacity: 0; } }
+.watch-screen-alt { opacity: 0; animation: screen-hold 20s ease-in-out infinite; }
+.watch-screen-alt:nth-child(2) { animation-delay: 5s; }
+.watch-screen-alt:nth-child(3) { animation-delay: 10s; }
+.watch-screen-alt:nth-child(4) { animation-name: screen-last; animation-delay: 15s; }
+@keyframes screen-hold { 0% { opacity: 0; } 5%, 30% { opacity: 1; } 30.05%, 100% { opacity: 0; } }
+@keyframes screen-last { 0% { opacity: 0; } 5%, 25% { opacity: 1; } 30%, 100% { opacity: 0; } }
 .product-figure figcaption { margin-top: 16px; width: 100%; text-align: center; font-size: 11px; color: var(--muted); }
 .section-rule { border-top: 1px solid var(--line); padding-block: 64px; }
 h2 { font-size: clamp(28px, 3vw, 40px); letter-spacing: -.035em; font-weight: 750; line-height: 1.1; }
