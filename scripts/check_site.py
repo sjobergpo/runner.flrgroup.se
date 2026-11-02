@@ -43,6 +43,8 @@ class Page(HTMLParser):
 
 pages = {}
 for path in sorted(ROOT.rglob('*.html')):
+    # Search Console ownership files are plain text, not pages.
+    if re.fullmatch(r'google[0-9a-f]+\.html', path.name): continue
     page = Page(path)
     page.feed(path.read_text())
     pages[path] = page
