@@ -1,6 +1,6 @@
 # Runner · runner.flrgroup.se
 
-Marketing, support, and privacy website for **Runner**, the Apple Watch running app by FLR Group. English only. Static HTML and CSS; no runtime dependencies, JavaScript, trackers, cookies, or external fonts.
+Marketing, support, and privacy website for **Runner**, the Apple Watch running app. English only. Static HTML and CSS; no runtime dependencies, JavaScript, trackers, cookies, or external fonts.
 
 ## App Store URLs
 
@@ -10,7 +10,7 @@ Marketing, support, and privacy website for **Runner**, the Apple Watch running 
 | Support URL | https://runner.flrgroup.se/support/ |
 | Privacy Policy URL | https://runner.flrgroup.se/privacy/ |
 
-Runner is not published yet. The homepage says “Coming to the App Store” and its Explore Runner button links to the app overview. The public contact address is **runner@flrgroup.se**; this mailbox must be operational before using the support URL in App Store Connect.
+App Store listing: https://apps.apple.com/app/runner-running-watch/id6816334642 (no country code, so Apple opens the visitor’s own storefront). The public contact address is **runner@flrgroup.se**.
 
 ## Local preview and checks
 
@@ -50,7 +50,8 @@ References: [GitHub custom domains](https://docs.github.com/en/pages/configuring
 - `watch-artwork.png` and `app-icon.png` come from Runner’s existing app assets. `watch-metrics.png` is a deterministic demo screenshot, with example data, from the app’s store-screenshot workflow. The watch hardware canvas is cropped with CSS using the same geometry as the app’s watch preview. It is overlaid with the real metric screenshot.
 - Replace the screenshot with a clean, deterministic English-language capture from the current app when the display changes. Check the screen alignment and the accessible example values on the homepage after replacement. Avoid screenshots containing personal workout data.
 - `social-preview.png` is the 1200 × 630 sharing image. Replace it when the headline or identity changes. Open Graph URLs intentionally point at the production custom domain.
-- When Runner receives its App Store URL, replace the Explore Runner button with the actual listing link and label, remove the coming-soon text, and use Apple’s official badge if desired. Do not use a search link or placeholder app ID.
+- `app-store-badge.svg` is Apple’s official black “Download on the App Store” badge (en-us) from Apple Marketing Tools (toolbox.marketingtools.apple.com). Do not modify it.
+- FLR Group is a brand, not a company. Refer to the developer as “we” or “us”; FLR Group appears only as the footer link.
 - Keep `site/privacy/index.html` accurate when app or hosting data practices change and update its effective date. Saved Apple Health data is not deleted merely by removing Runner.
 
 ## Verification at initial publication

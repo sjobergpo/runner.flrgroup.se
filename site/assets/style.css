@@ -35,7 +35,6 @@ em { font-style: italic; }
 .site-header nav a { font-size: 13px; padding-block: 12px; color: var(--muted); text-decoration: none; }
 .site-header nav a:hover, .site-header nav a[aria-current] { color: var(--white); }
 .site-header nav a[aria-current] { text-decoration: underline; text-decoration-color: var(--lime); text-underline-offset: 9px; }
-.eyebrow { font-size: 11px; letter-spacing: .14em; font-weight: 700; color: var(--muted); line-height: 1.5; }
 .hero { display: grid; grid-template-columns: 1.25fr .75fr; gap: 24px; padding-block: 64px 68px; align-items: center; }
 .hero h1 { font-size: clamp(56px, 7vw, 96px); letter-spacing: -.05em; font-weight: 850; line-height: .95; }
 .hero h1 em { color: var(--lime); }
@@ -43,8 +42,10 @@ em { font-style: italic; }
 .button { display: inline-flex; align-items: center; justify-content: space-between; gap: 32px; min-height: 50px; padding: 12px 22px; background: var(--lime); color: #000; font-size: 13px; font-weight: 750; text-decoration: none; border-radius: 3px; }
 .button:hover { background: #d4ff72; color: #000; }
 .button span { font-size: 20px; line-height: 1; font-weight: 400; }
-.availability { margin-top: 28px; font-size: 14px; font-weight: 600; color: var(--lime); }
-.compatibility { margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.app-store-badge { display: inline-block; margin-top: 28px; }
+.app-store-badge img { width: auto; height: 48px; }
+.app-store-badge:focus-visible { outline-offset: 4px; }
+.compatibility { margin-top: 16px; color: var(--muted); font-size: 12px; line-height: 1.7; }
 .product-figure { align-self: center; display: flex; flex-direction: column; align-items: center; padding-top: 12px; }
 .watch { position: relative; width: min(100%, 340px); aspect-ratio: 561 / 924; overflow: hidden; }
 .watch .watch-art { position: absolute; width: 534.75936%; max-width: none; height: auto; left: -217.29055%; top: -71.75325%; }
@@ -88,16 +89,14 @@ h2 { font-size: clamp(28px, 3vw, 40px); letter-spacing: -.035em; font-weight: 75
 .privacy-callout .text-link { color: var(--white); }
 .site-footer { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px 26px; border-top: 1px solid var(--line); padding-block: 32px; }
 .footer-brand { font-size: 18px; text-decoration: none; }
-.site-footer p, .site-footer small { font-size: 10px; color: var(--muted); }
+.site-footer p { font-size: 10px; color: var(--muted); }
 .site-footer p a { text-decoration: none; }
 .site-footer nav { display: flex; gap: 23px; }
 .site-footer nav a { font-size: 11px; color: var(--muted); text-decoration: none; padding-block: 12px; }
 .site-footer nav a:hover { color: var(--lime); }
-.site-footer small { grid-column: 1 / -1; }
 /* Support and policy use the same type and accents, with a reading column. */
 .document { max-width: 1000px; padding-block: 67px 80px; }
 .document-header h1, .not-found h1 { font-size: clamp(64px, 7.6vw, 100px); font-weight: 800; letter-spacing: -.06em; line-height: .98; margin-block: 24px; }
-.document-header h1 em, .not-found h1 em { color: var(--lime); }
 .document-lead { color: var(--muted); font-size: 18px; max-width: 570px; line-height: 1.65; }
 .contact-link { display: inline-flex; gap: 25px; align-items: center; color: var(--lime); font-size: clamp(17px, 2.8vw, 25px); margin-top: 24px; min-height: 44px; }
 .contact-note, .policy-date { color: var(--muted); font-size: 11px; margin-top: 9px; }
@@ -110,13 +109,12 @@ h2 { font-size: clamp(28px, 3vw, 40px); letter-spacing: -.035em; font-weight: 75
 .document-content section + section { border-top: 1px solid var(--line); margin-top: 48px; }
 .document-content h2 { font-size: clamp(28px, 4vw, 39px); margin-top: 17px; margin-bottom: 25px; }
 .document-content h3 { font-size: 19px; font-weight: 650; letter-spacing: -.02em; line-height: 1.35; margin-top: 30px; margin-bottom: 12px; }
-.document-content p:not(.eyebrow) { color: #b4b4bb; font-size: 15px; line-height: 1.85; overflow-wrap: anywhere; }
+.document-content p { color: #b4b4bb; font-size: 15px; line-height: 1.85; overflow-wrap: anywhere; }
 .document-content p + p { margin-top: 16px; }
 .document-content strong { color: var(--white); font-weight: 600; }
 .document-content a { color: var(--white); }
 .document-content a:hover { color: var(--lime); }
 .not-found { padding-block: 100px; min-height: 65vh; }
-.not-found > p:not(.eyebrow) { color: var(--muted); }
 .not-found .button { margin-top: 28px; margin-right: 30px; }
 @media (min-width: 1500px) { .hero { min-height: 790px; } .watch { width: 370px; } }
 @media (max-width: 1000px) {
@@ -138,7 +136,7 @@ h2 { font-size: clamp(28px, 3vw, 40px); letter-spacing: -.035em; font-weight: 75
   .hero { grid-template-columns: 1fr; padding-block: 43px 45px; gap: 35px; }
   .hero h1 { font-size: clamp(52px, 14vw, 72px); }
   .hero-description { margin-top: 20px; font-size: 16px; }
-  .availability { margin-top: 20px; }
+  .app-store-badge { margin-top: 20px; }
   .product-figure { padding-top: 0; }
   .watch { width: 260px; }
   .section-rule { padding-block: 44px; }
@@ -156,7 +154,6 @@ h2 { font-size: clamp(28px, 3vw, 40px); letter-spacing: -.035em; font-weight: 75
   .document-content section { padding-top: 38px; }
   .document-content section + section { margin-top: 36px; }
   .document-content h2 { font-size: 33px; }
-  .document-content p:not(.eyebrow) { font-size: 15px; }
   .not-found { padding-block: 60px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
