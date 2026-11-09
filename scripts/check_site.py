@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1] / 'site'
 ORIGIN = 'https://runner.flrgroup.se'
+ANALYTICS_SRC = 'https://static.cloudflareinsights.com/beacon.min.js'
 
 class Page(HTMLParser):
     def __init__(self, path):
@@ -18,6 +19,7 @@ class Page(HTMLParser):
         self.headings, self.canonical, self.description = 0, [], []
         self.title, self.language, self.viewport = False, False, False
         self.ld_json, self.in_ld_json = [], False
+        self.analytics = 0
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
         if 'id' in a:
@@ -30,6 +32,13 @@ class Page(HTMLParser):
         if tag == 'meta' and a.get('name') == 'viewport': self.viewport = True
         if tag == 'link' and a.get('rel') == 'canonical': self.canonical.append(a.get('href', ''))
         if tag == 'img' and 'alt' not in a: self.errors.append('image missing alt')
+        if tag == 'script' and a.get('src') == ANALYTICS_SRC:
+            # Cloudflare Web Analytics is the one allowed external script.
+            try: token = json.loads(a.get('data-cf-beacon', '')).get('token', '')
+            except ValueError: token = ''
+            if not re.fullmatch(r'[0-9a-f]{32}', token): self.errors.append('missing Cloudflare Web Analytics token')
+            self.analytics += 1
+            return
         for key in ('href', 'src'):
             if a.get(key): self.links.append((a[key], tag))
         if tag == 'script' and a.get('type') == 'application/ld+json' and 'src' not in a:
@@ -55,7 +64,8 @@ for path, page in pages.items():
     for ok, message in [(page.language, 'missing English language'), (page.title, 'missing title'),
                         (page.headings == 1, 'expected one h1'), (page.viewport, 'missing viewport'),
                         (len(page.description) == 1 and bool(page.description[0]), 'missing description'),
-                        (page.canonical == [expected], 'incorrect canonical URL')]:
+                        (page.canonical == [expected], 'incorrect canonical URL'),
+                        (page.analytics == 1, 'expected one Cloudflare Web Analytics script')]:
         if not ok: page.errors.append(message)
     for block in page.ld_json:
         try: json.loads(block)

@@ -1,6 +1,10 @@
 # Runner · runner.flrgroup.se
 
-Marketing, support, and privacy website for **Runner**, the Apple Watch running app. English only. Static HTML and CSS; no runtime dependencies, JavaScript, trackers, cookies, or external fonts.
+Marketing, support, and privacy website for **Runner**, the Apple Watch running app. English only. Static HTML and CSS; no runtime dependencies, cookies, or external fonts. The only JavaScript is the Cloudflare Web Analytics beacon, which counts page views without cookies.
+
+## Page views
+
+Page views are in the Cloudflare dashboard under **Analytics & Logs → Web Analytics → runner.flrgroup.se**. The site is not proxied through Cloudflare; each page loads the beacon with the site token from that dashboard (`data-cf-beacon` before `</body>`). `scripts/check_site.py` requires exactly one beacon with a valid token on every page. If analytics changes, update the **Website** section of the privacy policy too.
 
 ## App Store URLs
 
