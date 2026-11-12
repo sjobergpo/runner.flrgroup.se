@@ -6,11 +6,13 @@ on:
     paths:
       - 'site/**'
       - 'scripts/check_site.py'
+      - 'worker/**'
       - '.github/workflows/pages.yml'
   pull_request:
     paths:
       - 'site/**'
       - 'scripts/check_site.py'
+      - 'worker/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -26,6 +28,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Check App Store redirect
+        run: node --test worker/index.test.mjs
       - name: Check pages and local links
         run: python3 scripts/check_site.py
 

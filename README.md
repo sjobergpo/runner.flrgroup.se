@@ -8,6 +8,26 @@ Page views are in the Cloudflare dashboard under **Analytics & Logs → Web Anal
 
 ## App Store URLs
 
+### Click counter
+
+All six App Store links go through `https://runner-appstore.per-pontus-sjoberg.workers.dev/`. This dedicated Cloudflare Worker immediately returns a **302** redirect to the campaign URL below, with `Cache-Control: no-store` so repeat clicks reach the Worker. The JSON-LD listing URL stays direct. The website still runs on GitHub Pages; no DNS change or additional browser script is needed.
+
+Read the count in **Cloudflare → Workers & Pages → runner-appstore → Metrics → Requests**, selecting the period you want. This is an estimate of clicks, not unique people or downloads: bots, link previews, HEAD requests, other requests to the Worker, and our own tests can also be counted. Metrics may take a few minutes to appear and are available for up to three months, in time ranges of at most one week. There is no permanent total or breakdown by link. See [Cloudflare Workers metrics](https://developers.cloudflare.com/workers/observability/metrics-and-analytics/).
+
+The Worker uses no database, cookies, browser storage, or visitor identifiers. Workers observability is explicitly disabled and the code writes no request logs. Cloudflare still processes requests, including IP addresses, to deliver the redirect and provide its built-in aggregate metrics. Keep the **Website** section of the privacy policy current when changing this behavior.
+
+Source and deployment configuration are in `worker/`. To test and publish changes using the intended Cloudflare account:
+
+```sh
+node --test worker/index.test.mjs
+npx wrangler@4 whoami
+npx wrangler@4 deploy --config worker/wrangler.jsonc
+```
+
+Deploy and verify the Worker before publishing links to it. `GET /` and `HEAD /` redirect to the fixed campaign URL; query parameters cannot change the destination. Other paths return 404 and other methods return 405. Worker changes are tested by the GitHub workflow but deployed separately with Wrangler. If the Worker is unavailable, replace all six tracked links with the direct campaign URL below, update the link checks, and publish the site to restore direct access to Apple.
+
+### Apple destinations
+
 | App Store field | URL |
 | --- | --- |
 | Marketing URL | https://runner.flrgroup.se/ |
@@ -20,6 +40,7 @@ App Store listing: https://apps.apple.com/app/runner-running-watch/id6816334642 
 
 ```sh
 python3 scripts/check_site.py
+node --test worker/index.test.mjs
 python3 -m http.server 8765 --directory site
 ```
 

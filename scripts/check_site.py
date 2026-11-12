@@ -11,6 +11,9 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1] / 'site'
 ORIGIN = 'https://runner.flrgroup.se'
 ANALYTICS_SRC = 'https://static.cloudflareinsights.com/beacon.min.js'
+APP_STORE_REDIRECT = 'https://runner-appstore.per-pontus-sjoberg.workers.dev/'
+APP_STORE_LISTING = 'https://apps.apple.com/app/runner-running-watch/id6816334642'
+APP_STORE_LINK_COUNTS = {'index.html': 2, 'support/index.html': 2, 'privacy/index.html': 1, '404.html': 1}
 
 class Page(HTMLParser):
     def __init__(self, path):
@@ -68,10 +71,19 @@ for path, page in pages.items():
                         (page.analytics == 1, 'expected one Cloudflare Web Analytics script')]:
         if not ok: page.errors.append(message)
     for block in page.ld_json:
-        try: json.loads(block)
+        try:
+            data = json.loads(block)
+            for item in data.get('@graph', []):
+                if item.get('@type') == 'MobileApplication' and item.get('installUrl') != APP_STORE_LISTING:
+                    page.errors.append('JSON-LD installUrl must use the direct App Store listing')
         except ValueError as err: page.errors.append('invalid JSON-LD: ' + str(err))
+    app_store_links = sum(tag == 'a' and href == APP_STORE_REDIRECT for href, tag in page.links)
+    if app_store_links != APP_STORE_LINK_COUNTS.get(rel.as_posix(), 0):
+        page.errors.append('incorrect number of tracked App Store links')
     for href, tag in page.links:
         url = urlsplit(href)
+        if tag == 'a' and url.hostname == 'apps.apple.com':
+            page.errors.append('App Store link bypasses the click counter')
         if url.scheme == 'mailto':
             if url.path != 'runner@flrgroup.se': page.errors.append('unexpected contact address')
             continue
@@ -95,4 +107,4 @@ for route in ['index.html', 'support/index.html', 'privacy/index.html', '404.htm
 ET.parse(ROOT / 'sitemap.xml')
 if errors:
     print('\n'.join(errors)); sys.exit(1)
-print(f'PASS: {len(pages)} pages; local links and anchors, metadata, contact, and self-hosted assets verified.')
+print(f'PASS: {len(pages)} pages; 6 tracked App Store links, local links and anchors, metadata, contact, and self-hosted assets verified.')
