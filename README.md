@@ -6,13 +6,24 @@ Marketing, support, and privacy website for **Runner**, the Apple Watch running 
 
 Page views are in the Cloudflare dashboard under **Analytics & Logs → Web Analytics → runner.flrgroup.se**. The site is not proxied through Cloudflare; each page loads the beacon with the site token from that dashboard (`data-cf-beacon` before `</body>`). `scripts/check_site.py` requires exactly one beacon with a valid token on every page. If analytics changes, update the **Website** section of the privacy policy too.
 
+## Combined dashboard
+
+[Runner – Webb & App Store](https://dash.cloudflare.com/7a24728f75d1d43c3168c8a54e8ff1c6/dashboards/4afffbe7-913d-4174-acef-bddb807fbc9e) is saved in the Cloudflare account under **Observability → Dashboards**. It combines four stat cards with trend sparklines and a shared time range (initially **Last 24 hours**):
+
+- **App Store – anrop (uppskattade klick):** total requests from **Workers Invocations**, filtered to Script equals `runner-appstore`.
+- **Webb – sidvisningar:** total count from **RUM Pageload Events**, filtered to Request Host equals `runner.flrgroup.se`.
+- **App Store – Worker-fel:** total errors from **Workers Invocations**, with the same Script filter.
+- **App Store – CPU-tid totalt:** total CPU time from **Workers Invocations**, with the same Script filter. Cloudflare formats the duration automatically; it is a total for the period, not time per request.
+
+The dashboard reads existing aggregate analytics; it does not enable Workers Logs or collect additional visitor data. App Store requests remain an estimate of clicks. The Worker's **Request Distribution** shows Cloudflare data centers (such as Portland/PDX), not visitor countries.
+
 ## App Store URLs
 
 ### Click counter
 
 All six App Store links go through `https://runner-appstore.per-pontus-sjoberg.workers.dev/`. This dedicated Cloudflare Worker immediately returns a **302** redirect to the campaign URL below, with `Cache-Control: no-store` so repeat clicks reach the Worker. The JSON-LD listing URL stays direct. The website still runs on GitHub Pages; no DNS change or additional browser script is needed.
 
-Read the count in **Cloudflare → Workers & Pages → runner-appstore → Metrics → Requests**, selecting the period you want. This is an estimate of clicks, not unique people or downloads: bots, link previews, HEAD requests, other requests to the Worker, and our own tests can also be counted. Metrics may take a few minutes to appear and are available for up to three months, in time ranges of at most one week. There is no permanent total or breakdown by link. See [Cloudflare Workers metrics](https://developers.cloudflare.com/workers/observability/metrics-and-analytics/).
+Read the count in **Cloudflare → Workers & Pages → runner-appstore → Metrics → Invocations**, selecting the period you want, or use the combined dashboard above. This is an estimate of clicks, not unique people or downloads: bots, link previews, HEAD requests, other requests to the Worker, and our own tests can also be counted. Metrics may take a few minutes to appear and are available for up to three months, in time ranges of at most one week. There is no permanent total or breakdown by link. See [Cloudflare Workers metrics](https://developers.cloudflare.com/workers/observability/metrics-and-analytics/).
 
 The Worker uses no database, cookies, browser storage, or visitor identifiers. Workers observability is explicitly disabled and the code writes no request logs. Cloudflare still processes requests, including IP addresses, to deliver the redirect and provide its built-in aggregate metrics. Keep the **Website** section of the privacy policy current when changing this behavior.
 
