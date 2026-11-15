@@ -13,7 +13,7 @@ ORIGIN = 'https://runner.flrgroup.se'
 ANALYTICS_SRC = 'https://static.cloudflareinsights.com/beacon.min.js'
 APP_STORE_REDIRECT = 'https://runner-appstore.per-pontus-sjoberg.workers.dev/'
 APP_STORE_LISTING = 'https://apps.apple.com/app/runner-running-watch/id6816334642'
-APP_STORE_LINK_COUNTS = {'index.html': 2, 'support/index.html': 2, 'privacy/index.html': 1, '404.html': 1}
+APP_STORE_LINK_COUNTS = {'index.html': 2, 'technology/index.html': 2, 'support/index.html': 2, 'privacy/index.html': 1, '404.html': 1}
 
 class Page(HTMLParser):
     def __init__(self, path):
@@ -23,6 +23,7 @@ class Page(HTMLParser):
         self.title, self.language, self.viewport = False, False, False
         self.ld_json, self.in_ld_json = [], False
         self.analytics = 0
+        self.navigation, self.current_navigation = {}, None
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
         if 'id' in a:
@@ -35,6 +36,11 @@ class Page(HTMLParser):
         if tag == 'meta' and a.get('name') == 'viewport': self.viewport = True
         if tag == 'link' and a.get('rel') == 'canonical': self.canonical.append(a.get('href', ''))
         if tag == 'img' and 'alt' not in a: self.errors.append('image missing alt')
+        if tag == 'nav':
+            self.current_navigation = a.get('aria-label')
+            self.navigation[self.current_navigation] = []
+        if tag == 'a' and self.current_navigation:
+            self.navigation[self.current_navigation].append(a.get('href', ''))
         if tag == 'script' and a.get('src') == ANALYTICS_SRC:
             # Cloudflare Web Analytics is the one allowed external script.
             try: token = json.loads(a.get('data-cf-beacon', '')).get('token', '')
@@ -52,6 +58,7 @@ class Page(HTMLParser):
         if self.in_ld_json: self.ld_json[-1] += data
     def handle_endtag(self, tag):
         if tag == 'script': self.in_ld_json = False
+        if tag == 'nav': self.current_navigation = None
 
 pages = {}
 for path in sorted(ROOT.rglob('*.html')):
@@ -80,6 +87,14 @@ for path, page in pages.items():
     app_store_links = sum(tag == 'a' and href == APP_STORE_REDIRECT for href, tag in page.links)
     if app_store_links != APP_STORE_LINK_COUNTS.get(rel.as_posix(), 0):
         page.errors.append('incorrect number of tracked App Store links')
+    for label in ('Main navigation', 'Footer navigation'):
+        destinations = [
+            (path.parent / urlsplit(href).path).resolve()
+            if not href.startswith('/') else (ROOT / href.lstrip('/')).resolve()
+            for href in page.navigation.get(label, []) if not urlsplit(href).scheme
+        ]
+        if (ROOT / 'technology').resolve() not in destinations:
+            page.errors.append('missing Technology link in ' + label)
     for href, tag in page.links:
         url = urlsplit(href)
         if tag == 'a' and url.hostname == 'apps.apple.com':
@@ -102,9 +117,11 @@ for path, page in pages.items():
     errors.extend(f'{rel}: {err}' for err in page.errors)
 css = (ROOT / 'assets/style.css').read_text()
 if re.search(r'@import|url\(\s*[\'"]?https?://', css): errors.append('CSS loads external resources')
-for route in ['index.html', 'support/index.html', 'privacy/index.html', '404.html', 'robots.txt', 'sitemap.xml', '.nojekyll']:
+for route in ['index.html', 'technology/index.html', 'support/index.html', 'privacy/index.html', '404.html', 'robots.txt', 'sitemap.xml', '.nojekyll']:
     if not (ROOT / route).is_file(): errors.append('missing required file: ' + route)
-ET.parse(ROOT / 'sitemap.xml')
+sitemap = ET.parse(ROOT / 'sitemap.xml')
+if ORIGIN + '/technology/' not in [node.text for node in sitemap.findall('.//{*}loc')]:
+    errors.append('missing Technology page in sitemap')
 if errors:
     print('\n'.join(errors)); sys.exit(1)
-print(f'PASS: {len(pages)} pages; 6 tracked App Store links, local links and anchors, metadata, contact, and self-hosted assets verified.')
+print(f'PASS: {len(pages)} pages; {sum(APP_STORE_LINK_COUNTS.values())} tracked App Store links, local links and anchors, metadata, contact, and self-hosted assets verified.')

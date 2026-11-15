@@ -21,7 +21,7 @@ The dashboard reads existing aggregate analytics; it does not enable Workers Log
 
 ### Click counter
 
-All six App Store links go through `https://runner-appstore.per-pontus-sjoberg.workers.dev/`. This dedicated Cloudflare Worker immediately returns a **302** redirect to the campaign URL below, with `Cache-Control: no-store` so repeat clicks reach the Worker. The JSON-LD listing URL stays direct. The website still runs on GitHub Pages; no DNS change or additional browser script is needed.
+All eight App Store links go through `https://runner-appstore.per-pontus-sjoberg.workers.dev/`. This dedicated Cloudflare Worker immediately returns a **302** redirect to the campaign URL below, with `Cache-Control: no-store` so repeat clicks reach the Worker. The JSON-LD listing URL stays direct. The website still runs on GitHub Pages; no DNS change or additional browser script is needed.
 
 Read the count in **Cloudflare → Workers & Pages → runner-appstore → Metrics → Invocations**, selecting the period you want, or use the combined dashboard above. This is an estimate of clicks, not unique people or downloads: bots, link previews, HEAD requests, other requests to the Worker, and our own tests can also be counted. Metrics may take a few minutes to appear and are available for up to three months, in time ranges of at most one week. There is no permanent total or breakdown by link. See [Cloudflare Workers metrics](https://developers.cloudflare.com/workers/observability/metrics-and-analytics/).
 
@@ -35,7 +35,7 @@ npx wrangler@4 whoami
 npx wrangler@4 deploy --config worker/wrangler.jsonc
 ```
 
-Deploy and verify the Worker before publishing links to it. `GET /` and `HEAD /` redirect to the fixed campaign URL; query parameters cannot change the destination. Other paths return 404 and other methods return 405. Worker changes are tested by the GitHub workflow but deployed separately with Wrangler. If the Worker is unavailable, replace all six tracked links with the direct campaign URL below, update the link checks, and publish the site to restore direct access to Apple.
+Deploy and verify the Worker before publishing links to it. `GET /` and `HEAD /` redirect to the fixed campaign URL; query parameters cannot change the destination. Other paths return 404 and other methods return 405. Worker changes are tested by the GitHub workflow but deployed separately with Wrangler. If the Worker is unavailable, replace all eight tracked links with the direct campaign URL below, update the link checks, and publish the site to restore direct access to Apple.
 
 ### Apple destinations
 
@@ -57,7 +57,7 @@ python3 -m http.server 8765 --directory site
 
 Open http://localhost:8765/. The check verifies local links, fragment destinations, required pages, metadata, image descriptions, contact links, and self-hosted assets. No build step is needed.
 
-Before publishing content changes, inspect the homepage, support, privacy, and 404 pages at phone, tablet, and desktop widths. Check keyboard focus and browser zoom. The original Runner app repository is separate and private; this public repository contains only website files and the selected public-facing artwork.
+Before publishing content changes, inspect the homepage, technology, support, privacy, and 404 pages at phone, tablet, and desktop widths. Check keyboard focus and browser zoom. The original Runner app repository is separate and private; this public repository contains only website files and the selected public-facing artwork.
 
 ## GitHub Pages deployment
 
@@ -79,9 +79,22 @@ After DNS resolves and GitHub issues its certificate, enable **Enforce HTTPS** i
 
 References: [GitHub custom domains](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site), [one.com CNAME records](https://help.one.com/hc/en-us/articles/360000803517-How-do-I-create-a-CNAME-record), [GitHub Pages IP logging](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection).
 
+## Technology page
+
+`/technology/` explains how Apple Watch measurements reach Runner through HealthKit workout APIs and Core Location, then how the workout and available route are saved to Apple Health. It is linked from every header and footer, plus the homepage section after outdoor and indoor runs. Keep these shared navigation links consistent, including on the 404 page; the mobile header uses two rows.
+
+The diagram uses semantic HTML lists and decorative, original inline SVG illustrations, so its text and reading order remain usable without JavaScript or images. On wide screens the two Apple frameworks form parallel branches; smaller screens stack the stages. The metric source table distinguishes Apple's measurements from Runner's calculations. Check future edits against `WorkoutManager`, `WorkoutRouteRecorder`, `MetricValues`, and `RouteDistance` in the private app repository. In particular:
+
+- Outdoor pace uses HealthKit running speed; indoor pace is calculated by Runner from motion-based HealthKit distance. Runner does not directly use Core Motion.
+- HealthKit distance is primary; filtered GPS distance is only a fallback when HealthKit has no distance yet. GPS is not a replacement source for outdoor current pace.
+- Average pace, automatic lap pace, GPS filtering, and elevation gain include Runner's own calculations. Heart rate zone boundaries and time in zone come from HealthKit on watchOS 27 or later.
+- Health and location measurements are not sent to the developer. Avoid saying data never leaves the watch: Apple-managed Health syncing and optional Strava uploads are described in the privacy policy.
+
+`site/assets/works-with-apple-health.png` is Apple's unmodified official English badge, downloaded from [the artwork displayed in Apple's guidelines](https://developer.apple.com/licensing-trademarks/works-with-apple-health/images/badge-standard_2x.png). Its source is 424 × 118 pixels. Keep the artwork unchanged, at least 30 px high with clear space of at least one quarter of its displayed height, following [Works with Apple Health guidelines](https://developer.apple.com/licensing-trademarks/works-with-apple-health/). Use the badge once on the technology page; the diagram's illustrations are not Apple logos. The page includes trademark credits.
+
 ## Content and artwork maintenance
 
-- Edit the HTML directly under `site/`. The shared header, footer, and metadata are repeated on the four pages; keep them consistent. Layout and color tokens are in `site/assets/style.css`.
+- Edit the HTML directly under `site/`. The shared header, footer, and metadata are repeated on the five pages; keep them consistent. Layout and color tokens are in `site/assets/style.css`.
 - Update feature descriptions against the released app, especially purchase gating, requirements, permissions, controls, and sync. Do not describe unreleased capabilities as available.
 - `watch-artwork.png` and `app-icon.png` come from Runner’s existing app assets. The watch hardware canvas is cropped with CSS using the same geometry as the app’s watch preview. It is overlaid with the real metric screenshot.
 - The watch screen uses five 416 × 496 captures of the real watch view with example data, one per main metric plus the heart rate zones: `watch-metrics.png` (PACE, cyan), `watch-average-pace.png` (AVG PACE, Midnight Blush), `watch-lap-pace.png` (LAP PACE, white), `watch-altitude-gain.png` (ALT GAIN, yellow) and `watch-heart-rate-zones.png` (PACE with the zone band and the heart rate centered under it, 138 bpm in zone 2). Regenerate them in the app repo with `.img/screenshots_workflow/store-assets.sh website` and copy them from `.img/screenshots_workflow/captures/website/` (`website-lap-pace.png` becomes `watch-lap-pace.png` and `website-heart-rate-zones.png` becomes `watch-heart-rate-zones.png`). The clock shows the simulator’s time, so start the run just after a minute boundary and check that all five show the same time.
