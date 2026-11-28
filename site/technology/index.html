@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#faf8f0">
   <meta name="description" content="See how Runner uses Apple Watch, HealthKit workout APIs, and Core Location for running metrics, and which calculations Runner adds.">
   <title>Runner Technology – Built on Apple’s workout technology</title>
   <link rel="canonical" href="https://runner.flrgroup.se/technology/">
@@ -27,87 +27,71 @@
     <a class="brand" href="../" aria-label="Runner home"><img src="../assets/app-icon.png" width="36" height="36" alt=""><span>RUNNER</span></a>
     <nav aria-label="Main navigation"><a href="../">Overview</a><a href="./" aria-current="page">Technology</a><a href="../support/">Support</a><a href="../privacy/">Privacy</a></nav>
   </header>
-  <main id="main">
+  <main id="main" class="technology">
     <header class="technology-hero wrap">
-      <p class="eyebrow">THE TECHNOLOGY BEHIND YOUR RUN</p>
-      <h1>Built on Apple’s<br><em>workout technology.</em></h1>
-      <p class="technology-lead">Runner records your run with Apple’s workout APIs and uses the watch’s measurements for heart rate, distance, and outdoor running speed. Core Location supplies GPS positions. Runner brings those measurements into view and adds calculations for metrics such as average pace and lap pace.</p>
-      <div class="health-compatibility"><img src="../assets/works-with-apple-health.png" width="212" height="59" alt="Works with Apple Health"><p>Your workout and available route are saved to Apple Health, with your permission.</p></div>
+      <h1>How Runner works.</h1>
+      <p class="technology-lead">From the sensors on your wrist to the workout saved in Apple Health.</p>
     </header>
 
-    <section class="technology-flow wrap section-rule" aria-labelledby="flow-title">
-      <div class="technology-section-heading"><div><p class="eyebrow">FROM SENSOR TO SCREEN</p><h2 id="flow-title">How your run comes together</h2></div><p>Recorded on Apple Watch.<br>Built around Apple’s frameworks.</p></div>
-      <figure class="workout-flow">
-        <ol class="flow-stages" role="list" aria-label="Workout data flow">
-          <li class="flow-node flow-watch">
-            <svg class="tech-icon lime" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17 12 19 3h10l2 9M17 36l2 9h10l2-9"/><rect x="12" y="12" width="24" height="24" rx="7"/><path d="M36 20h3v8h-3M17 25h5l3-6 3 10 3-5"/></svg>
-            <p class="flow-label">01 / SENSORS</p><h3>Apple Watch</h3><p>Heart rate, motion, and GPS. Your run is recorded on your wrist, without needing your iPhone.</p>
-          </li>
-          <li class="flow-branches">
-            <span class="visually-hidden">Two parallel Apple frameworks receive the measurements:</span>
-            <ul class="flow-apis" role="list">
-              <li class="flow-node flow-healthkit">
-                <svg class="tech-icon pink" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="7" y="6" width="34" height="36" rx="6"/><path d="M16 6v5h16V6M12 26h7l4-9 5 17 4-8h4"/></svg>
-                <p class="flow-label">02 / WORKOUT APIs</p><h3>HealthKit</h3><p>The workout session, active time, heart rate, primary distance, and outdoor running speed.</p><p class="flow-api-name">HKWorkoutSession<br>HKLiveWorkoutBuilder</p>
-              </li>
-              <li class="flow-node flow-location">
-                <svg class="tech-icon cyan" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M35 19c0 9-11 20-11 20S13 28 13 19a11 11 0 0 1 22 0Z"/><circle cx="24" cy="19" r="4"/><path d="M12 34H9l-4 9h38l-4-9h-3"/></svg>
-                <p class="flow-label">02 / GPS · OUTDOORS</p><h3>Core Location</h3><p>Positions for your route, elevation calculations, and fallback distance when HealthKit has no distance yet.</p>
-              </li>
-            </ul>
-          </li>
-          <li class="flow-node flow-runner">
-            <img class="tech-icon" src="../assets/app-icon.png" width="48" height="48" alt="">
-            <p class="flow-label">03 / YOUR DISPLAY</p><h3>Runner</h3><p>Displays your measurements, converts speed to pace, and calculates average pace, lap pace, and elevation gain.</p>
-            <p class="flow-node-note">Indoor pace is calculated from motion-based distance.</p>
-          </li>
-          <li class="flow-node flow-saved">
-            <svg class="tech-icon lime" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 15V9a3 3 0 0 1 3-3h11l5 6h12a3 3 0 0 1 3 3v24a3 3 0 0 1-3 3H10a3 3 0 0 1-3-3Z"/><path d="m16 27 6 6 11-13"/></svg>
-            <p class="flow-label">04 / SAVED WORKOUT</p><h3>Apple Health</h3><p>Your workout and available GPS route are saved through HealthKit, with your permission.</p>
-          </li>
-        </ol>
-        <figcaption>For indoor runs, the HealthKit branch uses motion-based distance. Core Location and GPS route recording are used outdoors only.</figcaption>
-      </figure>
+    <section class="technology-flow wrap" aria-labelledby="flow-title">
+      <h2 id="flow-title" class="visually-hidden">From Apple Watch to Apple Health</h2>
+      <ol class="flow-stages" role="list">
+        <li>
+          <svg class="tech-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17 12 19 3h10l2 9M17 36l2 9h10l2-9"/><rect x="12" y="12" width="24" height="24" rx="7"/><path d="M36 20h3v8h-3M17 25h5l3-6 3 10 3-5"/></svg>
+          <div><h3>Apple Watch</h3><p>Your watch measures heart rate and motion, and uses GPS on outdoor runs.</p></div>
+        </li>
+        <li>
+          <svg class="tech-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="7" y="6" width="34" height="36" rx="6"/><path d="M16 6v5h16V6M12 26h7l4-9 5 17 4-8h4"/></svg>
+          <div><h3>Apple’s frameworks</h3><p>HealthKit provides workout measurements. Core Location provides outdoor GPS and altitude.</p></div>
+        </li>
+        <li>
+          <img class="tech-icon runner-icon" src="../assets/app-icon.png" width="48" height="48" alt="">
+          <div><h3>Runner</h3><p>Runner puts the metrics on your wrist and calculates average pace, lap pace, and elevation gain.</p></div>
+        </li>
+        <li>
+          <svg class="tech-icon" width="48" height="48" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="health-heart-gradient" x2="0" y2="1">
+                <stop stop-color="#fa739b"/>
+                <stop offset="1" stop-color="#e53249"/>
+              </linearGradient>
+            </defs>
+            <rect x=".5" y=".5" width="47" height="47" rx="10" fill="#fff" stroke="#deded5"/>
+            <path fill="url(#health-heart-gradient)" transform="translate(7.2 7.2) scale(.7)" d="M24 40S6 29.5 6 18.5a9.5 9.5 0 0 1 18-4.25A9.5 9.5 0 0 1 42 18.5C42 29.5 24 40 24 40Z"/>
+          </svg>
+          <div><h3>Apple Health</h3><p>With your permission, Runner saves your workout and any available route to Apple Health.</p></div>
+        </li>
+      </ol>
+      <img class="health-badge" src="../assets/works-with-apple-health.png" width="212" height="59" alt="Works with Apple Health">
     </section>
 
-    <section class="technology-metrics wrap section-rule" aria-labelledby="sources-title">
-      <div class="technology-section-heading"><div><p class="eyebrow">THE SOURCE OF EACH NUMBER</p><h2 id="sources-title">Where your metrics come from</h2></div><p>Apple provides the core measurements.<br>Here is what Runner does with them.</p></div>
-      <table class="metric-sources">
-        <caption class="visually-hidden">Data sources and Runner’s calculations for each running metric</caption>
-        <thead><tr><th scope="col">Metric</th><th scope="col">Source and calculation</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">Outdoor pace <span class="cyan">PACE</span></th><td>Apple’s running speed from HealthKit, converted to minutes per kilometre or mile.</td></tr>
-          <tr><th scope="row">Distance <span class="lime">KM / MI</span></th><td>HealthKit is the primary source. Outdoors, Runner uses filtered GPS distance as a fallback until HealthKit provides distance.</td></tr>
-          <tr><th scope="row">Heart rate &amp; active time <span class="pink">BPM <span class="source-separator">/</span> TIME</span></th><td>Heart rate comes from HealthKit. Active time comes from Apple’s workout builder and excludes pauses.</td></tr>
-          <tr><th scope="row">Average pace <span class="cyan">AVG PACE</span></th><td>Runner calculates pace from distance and active time, smoothing the live display. The final summary uses the total distance and active time without that smoothing.</td></tr>
-          <tr><th scope="row">Lap pace <span class="cyan">LAP PACE</span></th><td>Runner calculates pace for automatic distance laps, using distance and active time and estimating when each lap boundary was crossed.</td></tr>
-          <tr><th scope="row">Elevation gain <span class="yellow">ALT GAIN</span></th><td>Runner calculates climbs from filtered altitude readings supplied by Core Location. Available outdoors only.</td></tr>
-          <tr><th scope="row">Indoor pace <span class="cyan">PACE</span></th><td>HealthKit supplies motion-based distance. Runner calculates current pace from changes in that distance over a short window of active time. No GPS is used.</td></tr>
-          <tr><th scope="row">Heart rate zones <span class="pink">ZONES</span></th><td>Zone boundaries and time in each zone come from HealthKit on watchOS 27 or later. Runner uses your current heart rate to show your position within those zones.</td></tr>
-        </tbody>
-      </table>
-      <p class="technology-note">The one-time upgrade includes lap pace, elevation gain, and heart rate zones. The next Runner update renames it Runner Pro and adds custom workouts on Apple Watch with watchOS 27 or later. <a href="../support/#runner-pro">See what’s included</a>.</p>
+    <section class="technology-details wrap" aria-labelledby="sources-title">
+      <h2 id="sources-title">Where the numbers come from</h2>
+      <details>
+        <summary>Metric sources and calculations</summary>
+        <dl class="metric-sources">
+          <div><dt>Outdoor pace</dt><dd>Apple’s running speed from HealthKit, converted to minutes per kilometre or mile.</dd></div>
+          <div><dt>Distance</dt><dd>HealthKit is the primary source. Outdoors, Runner uses filtered GPS distance as a fallback until HealthKit provides distance.</dd></div>
+          <div><dt>Heart rate &amp; active time</dt><dd>Heart rate comes from HealthKit. Active time comes from Apple’s workout builder and excludes pauses.</dd></div>
+          <div><dt>Average pace</dt><dd>Runner calculates pace from distance and active time, smoothing the live display. The final summary uses the total distance and active time without that smoothing.</dd></div>
+          <div><dt>Lap pace</dt><dd>Runner calculates pace for automatic distance laps, using distance and active time and estimating when each lap boundary was crossed.</dd></div>
+          <div><dt>Elevation gain</dt><dd>Runner calculates climbs from filtered altitude readings supplied by Core Location. Available outdoors only.</dd></div>
+          <div><dt>Indoor pace</dt><dd>HealthKit supplies motion-based distance. Runner calculates current pace from changes in that distance over a short window of active time. No GPS is used.</dd></div>
+          <div><dt>Heart rate zones</dt><dd>Zone boundaries and time in each zone come from HealthKit on watchOS 27 or later. Runner uses your current heart rate to show your position within those zones.</dd></div>
+        </dl>
+        <p class="technology-note">Runner filters poor-quality GPS positions and implausible jumps. Missing or outdated heart rate and current pace readings appear as a dash.</p>
+        <p class="technology-note">Apple documentation includes <a href="https://developer.apple.com/documentation/healthkit/running-workout-sessions">workout sessions</a> and <a href="https://developer.apple.com/documentation/corelocation">Core Location</a>.</p>
+      </details>
     </section>
 
-    <section class="overview wrap section-rule" aria-labelledby="runner-role-title">
-      <div class="section-intro"><p class="eyebrow">WHAT RUNNER ADDS</p><h2 id="runner-role-title">Made for a clear view<br>of your run</h2><p>Apple’s workout APIs handle the session and collect the core measurements. Runner turns those inputs into a display you can read at a glance.</p></div>
-      <div class="layout-notes">
-        <div><h3>Measurements into running metrics</h3><p>Speed becomes pace. Distance and active time become average pace and lap pace. GPS altitude becomes elevation gain.</p></div>
-        <div><h3>Careful handling of GPS data</h3><p>Runner filters poor-quality positions and implausible jumps before using them for the route and fallback distance. Altitude readings are filtered separately before counting climbs.</p></div>
-        <div><h3>A display that respects pauses</h3><p>Paused time is excluded from pace calculations. Missing or outdated heart rate and current pace readings appear as a dash.</p></div>
+    <section class="technology-end wrap" aria-labelledby="privacy-title">
+      <div>
+        <h2 id="privacy-title">Your data, your choice.</h2>
+        <p>Runner processes your workout on Apple Watch. We receive no health or location data. <a href="../privacy/">Read the privacy policy</a>.</p>
       </div>
-    </section>
-
-    <section class="privacy-callout wrap section-rule" aria-labelledby="privacy-title">
-      <h2 id="privacy-title">Your run.<br>Your permissions.</h2>
-      <div><p>Runner processes workout measurements on Apple Watch. No health or location data is sent to us. You control access through Apple’s Health and location permissions.</p><p class="technology-note">See the privacy policy for Apple-managed syncing and optional sharing with Strava.</p><a class="text-link" href="../privacy/">Read the privacy policy <span aria-hidden="true">↗</span></a></div>
-    </section>
-
-    <section class="technology-cta wrap section-rule" aria-labelledby="try-title">
-      <div><h2 id="try-title">Your run. In full view.</h2><p>Core running metrics, free on Apple Watch.</p></div>
       <a class="app-store-badge" href="https://runner-appstore.per-pontus-sjoberg.workers.dev/"><img src="../assets/app-store-badge.svg" width="144" height="48" alt="Download on the App Store"></a>
     </section>
-    <div class="technology-references wrap"><p>Explore Apple’s documentation: <a href="https://developer.apple.com/documentation/healthkit/running-workout-sessions">Workout sessions</a> · <a href="https://developer.apple.com/documentation/corelocation">Core Location</a></p><p>Apple, the Apple logo, Apple Watch, iPhone, and HealthKit are trademarks of Apple Inc., registered in the U.S. and other countries. Apple Health is a trademark of Apple Inc.</p></div>
+    <p class="technology-references wrap">Apple, the Apple logo, Apple Watch, iPhone, and HealthKit are trademarks of Apple Inc., registered in the U.S. and other countries. Apple Health is a trademark of Apple Inc.</p>
   </main>
   <footer class="site-footer wrap">
     <a class="footer-brand" href="../">RUNNER</a>

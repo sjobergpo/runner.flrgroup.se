@@ -1,6 +1,6 @@
 # Runner · runner.flrgroup.se
 
-Marketing, support, and privacy website for **Runner**, the Apple Watch running app. English only. Static HTML and CSS; no runtime dependencies, cookies, or external fonts. The only JavaScript is the Cloudflare Web Analytics beacon, which counts page views without cookies.
+Marketing, support, and privacy website for **Runner**, the Apple Watch running app. English only. Static HTML and CSS with self-hosted DM Sans and the original system font stack for the Runner wordmark. The only JavaScript is the Cloudflare Web Analytics beacon, which counts page views without cookies.
 
 ## Page views
 
@@ -83,7 +83,7 @@ References: [GitHub custom domains](https://docs.github.com/en/pages/configuring
 
 `/technology/` explains how Apple Watch measurements reach Runner through HealthKit workout APIs and Core Location, then how the workout and available route are saved to Apple Health. It is linked from every header and footer, plus the homepage section after outdoor and indoor runs. Keep these shared navigation links consistent, including on the 404 page; the mobile header uses two rows.
 
-The diagram uses semantic HTML lists and decorative, original inline SVG illustrations, so its text and reading order remain usable without JavaScript or images. On wide screens the two Apple frameworks form parallel branches; smaller screens stack the stages. The metric source table distinguishes Apple's measurements from Runner's calculations. Check future edits against `WorkoutManager`, `WorkoutRouteRecorder`, `MetricValues`, and `RouteDistance` in the private app repository. In particular:
+The diagram uses semantic HTML lists and decorative, original inline SVG illustrations, so its text and reading order remain usable without JavaScript or images. The four stages read left to right on desktop and stack on narrow screens. The expandable metric reference distinguishes Apple's measurements from Runner's calculations. Check future edits against `WorkoutManager`, `WorkoutRouteRecorder`, `MetricValues`, and `RouteDistance` in the private app repository. In particular:
 
 - Outdoor pace uses HealthKit running speed; indoor pace is calculated by Runner from motion-based HealthKit distance. Runner does not directly use Core Motion.
 - HealthKit distance is primary; filtered GPS distance is only a fallback when HealthKit has no distance yet. GPS is not a replacement source for outdoor current pace.
@@ -98,7 +98,8 @@ The diagram uses semantic HTML lists and decorative, original inline SVG illustr
 - Update feature descriptions against the released app, especially purchase gating, requirements, permissions, controls, and sync. Do not describe unreleased capabilities as available.
 - `watch-artwork.png` and `app-icon.png` come from Runner’s existing app assets. The watch hardware canvas is cropped with CSS using the same geometry as the app’s watch preview. It is overlaid with the real metric screenshot.
 - The watch screen uses five 416 × 496 captures of the real watch view with example data, one per main metric plus the heart rate zones: `watch-metrics.png` (PACE, cyan), `watch-average-pace.png` (AVG PACE, Midnight Blush), `watch-lap-pace.png` (LAP PACE, white), `watch-altitude-gain.png` (ALT GAIN, yellow) and `watch-heart-rate-zones.png` (PACE with the zone band and the heart rate centered under it, 138 bpm in zone 2). Regenerate them in the app repo with `.img/screenshots_workflow/store-assets.sh website` and copy them from `.img/screenshots_workflow/captures/website/` (`website-lap-pace.png` becomes `watch-lap-pace.png` and `website-heart-rate-zones.png` becomes `watch-heart-rate-zones.png`). The clock shows the simulator’s time, so start the run just after a minute boundary and check that all five show the same time.
-- The homepage stacks the images and cycles through them with CSS in Double Tap order (`.watch-screen-alt`, 20 s cycle, 4 s each), with the heart rate zones last. With reduced motion only the pace image is shown. To show fewer metrics, remove `.watch-screen-alt` images from `site/index.html` and adjust the cycle in `style.css`. Check the screen alignment and the accessible example values on the homepage after replacement.
+- The homepage pairs five radio controls with the matching watch screenshots. The pace example is selected by default. The screen change uses a short fade when reduced motion is off. Check the screen alignment and update the image descriptions when replacing these assets.
+- `track-runner.jpg` and `trail-runner.jpg` are the generated editorial images for the homepage. When replacing them, check how the subjects are cropped at both desktop and mobile widths.
 - Heart rate zones were released in Runner 1.1 and require watchOS 27 or later. They are included in Runner Pro and described on the homepage and in Support under `#heart-rate-zones`.
 - When the Workouts update is downloadable and the purchase is listed as Runner Pro, remove the coming-soon labels and update the feature availability copy on the homepage, Support, and Technology. Keep the old purchase name in the recovery instructions for earlier versions.
 - `social-preview.png` is the 1200 × 630 sharing image. Replace it when the headline or identity changes. Open Graph URLs intentionally point at the production custom domain.
