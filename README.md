@@ -1,6 +1,6 @@
 # Runner · runner.flrgroup.se
 
-Marketing, support, and privacy website for **Runner**, the Apple Watch running app. English only. Static HTML and CSS; no runtime dependencies, cookies, or external fonts. The only JavaScript is the Cloudflare Web Analytics beacon, which counts page views without cookies.
+Marketing, support, and privacy website for **Runner**, the Apple Watch running app. English only. Static HTML and CSS with self-hosted DM Sans and Barlow Condensed fonts. The only JavaScript is the Cloudflare Web Analytics beacon, which counts page views without cookies.
 
 ## Page views
 
@@ -98,7 +98,8 @@ The diagram uses semantic HTML lists and decorative, original inline SVG illustr
 - Update feature descriptions against the released app, especially purchase gating, requirements, permissions, controls, and sync. Do not describe unreleased capabilities as available.
 - `watch-artwork.png` and `app-icon.png` come from Runner’s existing app assets. The watch hardware canvas is cropped with CSS using the same geometry as the app’s watch preview. It is overlaid with the real metric screenshot.
 - The watch screen uses five 416 × 496 captures of the real watch view with example data, one per main metric plus the heart rate zones: `watch-metrics.png` (PACE, cyan), `watch-average-pace.png` (AVG PACE, Midnight Blush), `watch-lap-pace.png` (LAP PACE, white), `watch-altitude-gain.png` (ALT GAIN, yellow) and `watch-heart-rate-zones.png` (PACE with the zone band and the heart rate centered under it, 138 bpm in zone 2). Regenerate them in the app repo with `.img/screenshots_workflow/store-assets.sh website` and copy them from `.img/screenshots_workflow/captures/website/` (`website-lap-pace.png` becomes `watch-lap-pace.png` and `website-heart-rate-zones.png` becomes `watch-heart-rate-zones.png`). The clock shows the simulator’s time, so start the run just after a minute boundary and check that all five show the same time.
-- The homepage stacks the images and cycles through them with CSS in Double Tap order (`.watch-screen-alt`, 20 s cycle, 4 s each), with the heart rate zones last. With reduced motion only the pace image is shown. To show fewer metrics, remove `.watch-screen-alt` images from `site/index.html` and adjust the cycle in `style.css`. Check the screen alignment and the accessible example values on the homepage after replacement.
+- The homepage pairs five radio controls with the matching watch screenshots. The pace example is selected by default. The screen change uses a short fade when reduced motion is off. Check the screen alignment and update the image descriptions when replacing these assets.
+- `track-runner.jpg` is the generated editorial image for the homepage. When replacing it, check how the subject is cropped at both desktop and mobile widths.
 - Heart rate zones were released in Runner 1.1 and require watchOS 27 or later. They are included in Runner Pro and described on the homepage and in Support under `#heart-rate-zones`.
 - When the Workouts update is downloadable and the purchase is listed as Runner Pro, remove the coming-soon labels and update the feature availability copy on the homepage, Support, and Technology. Keep the old purchase name in the recovery instructions for earlier versions.
 - `social-preview.png` is the 1200 × 630 sharing image. Replace it when the headline or identity changes. Open Graph URLs intentionally point at the production custom domain.
